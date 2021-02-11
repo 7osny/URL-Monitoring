@@ -1,7 +1,7 @@
 # URL-Monitoring
 # Prerequisites:
 
-- The application was built using Node.js, express.js Framework, so you should ensure you have it installed on your machine.
+- The application was built using Node.js, express.js Framework, so you should ensure you have installed it on your machine.
 
 ### <a name="Features">Features</a>
 
