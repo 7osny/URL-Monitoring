@@ -9,7 +9,7 @@ const options = {
 const checkHistory = db.sequelize.define(
   "checkHistory",
   {
-    id: {
+    historyId: {
       autoIncrement: true,
       type: db.Sequelize.INTEGER(11).UNSIGNED,
       allowNull: false,

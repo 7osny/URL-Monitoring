@@ -9,7 +9,7 @@ const options = {
 const User = db.sequelize.define(
   "User",
   {
-    id: {
+    userId: {
       autoIncrement: true,
       type: db.Sequelize.INTEGER(11).UNSIGNED,
       allowNull: false,

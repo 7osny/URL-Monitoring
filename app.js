@@ -11,6 +11,7 @@ const db= require('./database/init');
 require('./database/associations');
 db.sequelize.sync().then(()=>{
   console.log('Database is ready');
+  
 });
 const app = express();
 

@@ -9,7 +9,7 @@ const options = {
 const Report = db.sequelize.define(
   "Report",
   {
-    id: {
+    reportId: {
       autoIncrement: true,
       type: db.Sequelize.INTEGER(11).UNSIGNED,
       allowNull: false,

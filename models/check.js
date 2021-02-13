@@ -8,7 +8,7 @@ const options = {
 };
 const Check = db.sequelize.define(
   "Check", {
-    id: {
+    checkId: {
       autoIncrement: true,
       type: db.Sequelize.INTEGER(11).UNSIGNED,
       allowNull: false,
@@ -53,11 +53,18 @@ const Check = db.sequelize.define(
       defaultValue: 10
     },
     authentication: {
-      type: db.Sequelize.STRING(200),
+      type: db.Sequelize.STRING(255),
       allowNull: true,
+    /*  set(val) {
+        this.setDataValue('authentication', `${val.username},${val.password}`);
+        },
+        get() {
+        const key = this.getDataValue('authentication').split(',');
+        return { username: key[0], password: key[1]};
+        },*/
     },
     httpHeaders: {
-      type: db.Sequelize.STRING(1000),
+      type: db.Sequelize.STRING(255),
       allowNull: true,
     },
     assertStatusCode: {
@@ -65,8 +72,14 @@ const Check = db.sequelize.define(
       allowNull: true,
     },
     tags: {
-      type: db.Sequelize.STRING(1000),
+      type: db.Sequelize.STRING(255),
       allowNull: true,
+   /*   get() {
+        return this.getDataValue('tags').split(',');
+        },
+        set(val) {
+        this.setDataValue('tags', val.join(','));
+        },*/
     },
     ignoreSSL: {
       type: db.Sequelize.BOOLEAN,

@@ -4,7 +4,7 @@ const Report =require('../models/report');
 const checkHistory =require('../models/history');
 
 Check.belongsTo(User,{
-    foreignKey: 'id',
+    foreignKey: 'userId',
     as: 'users',
 });
 User.hasMany(Check,{
@@ -12,13 +12,13 @@ User.hasMany(Check,{
   as: 'checks'
 });
 checkHistory.belongsTo(Check,{
-  foreignKey: 'id',
+  foreignKey: 'checkId',
   as: 'checks',
+  
 });
 Check.hasMany(checkHistory,{
   foreignKey: 'checkId',
   onDelete: 'CASCADE',
-  onUpdate: 'CASCADE',
 as: 'checkHistory'
 });
 Check.hasOne(Report,{
