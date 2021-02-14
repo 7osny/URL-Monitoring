@@ -1,6 +1,8 @@
-const Sequelize= require('sequelize');
-const configurations =require ('../config/config');
-const db={}
+/* eslint-disable linebreak-style */
+const Sequelize = require('sequelize');
+const configurations = require('../config/config');
+
+const db = {};
 const {
   name,
   username,
@@ -13,7 +15,7 @@ const {
 const sequelize = new Sequelize(name, username, password, {
   host,
   port,
- logging,
+  logging,
   pool: {
     max: pool.max,
     min: pool.min,
@@ -24,4 +26,4 @@ const sequelize = new Sequelize(name, username, password, {
 });
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
-module.exports=db;
+module.exports = db;

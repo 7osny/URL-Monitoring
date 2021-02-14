@@ -1,13 +1,15 @@
-const db = require("../database/init");
+/* eslint-disable linebreak-style */
+const db = require('../database/init');
+
 const options = {
   freezeTableName: true,
-  tableName: "users",
-  modelName: "users",
+  tableName: 'users',
+  modelName: 'users',
   createdAt: false,
   updatedAt: false,
 };
 const User = db.sequelize.define(
-  "User",
+  'User',
   {
     userId: {
       autoIncrement: true,
@@ -24,7 +26,7 @@ const User = db.sequelize.define(
       allowNull: false,
     },
     email: {
-       type: db.Sequelize.STRING(100),
+      type: db.Sequelize.STRING(100),
       allowNull: false,
       unique: true,
     },
@@ -34,14 +36,14 @@ const User = db.sequelize.define(
     },
     verified: {
       type: db.Sequelize.BOOLEAN,
-      defaultValue:0
+      defaultValue: 0,
     },
-    code:{
-      type:db.Sequelize.INTEGER(6).UNSIGNED,
-      allowNull:false,
-    }
+    code: {
+      type: db.Sequelize.INTEGER(6).UNSIGNED,
+      allowNull: false,
+    },
   },
-  options
+  options,
 );
 
 module.exports = User;

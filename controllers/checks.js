@@ -1,13 +1,15 @@
-const User = require('../models/user');
+/* eslint-disable linebreak-style */
+/* eslint-disable consistent-return */
+/* eslint-disable no-console */
+const axios = require('axios');
 const Check = require('../models/check');
 const Report = require('../models/report');
 const checkHistory = require('../models/history');
-const axios = require('axios');
 const helper = require('../helpers/verifyemail');
 
-const createCheck = async (req, res, next) => {
+const createCheck = async (req, res) => {
   try {
-    let {
+    const {
       checkId,
       name,
       url,
@@ -22,18 +24,18 @@ const createCheck = async (req, res, next) => {
       httpHeaders,
       assertStatusCode,
       tags,
-      ignoreSSL
+      ignoreSSL,
     } = req.body;
 
     const data = await Check.findOne({
       where: {
         checkId,
         name,
-        userId: req.user.userId
+        userId: req.user.userId,
       },
     });
     if (data) {
-      res.status(409).send("Your url check is already founded");
+      res.status(409).send('Your url check is already founded');
     } else {
       const valid = await Check.create({
         checkId,
@@ -51,21 +53,22 @@ const createCheck = async (req, res, next) => {
         assertStatusCode,
         tags,
         ignoreSSL,
-        userId: req.user.userId
+        userId: req.user.userId,
       });
-      if (valid)
-        res.status(201).send(`check created successfuly`);
-      else
+      if (valid) {
+        res.status(201).send('check created successfuly');
+      } else {
         res.status(400).send('check not created');
+      }
     }
   } catch (error) {
     return res.status(500).send(error.message);
   }
 };
 
-const editCheck = async (req, res, next) => {
+const editCheck = async (req, res) => {
   try {
-    let {
+    const {
       checkId,
       name,
       url,
@@ -80,8 +83,7 @@ const editCheck = async (req, res, next) => {
       httpHeaders,
       assertStatusCode,
       tags,
-      ignoreSSL
-
+      ignoreSSL,
     } = req.body;
     const result = await Check.update({
       checkId,
@@ -98,31 +100,32 @@ const editCheck = async (req, res, next) => {
       httpHeaders,
       assertStatusCode,
       tags,
-      ignoreSSL
+      ignoreSSL,
     }, {
       where: {
         checkId,
-        userId: req.user.userId
-      }
+        userId: req.user.userId,
+      },
     });
-    if (result)
+    if (result) {
       res.status(201).send(result);
-    else
+    } else {
       res.status(404);
+    }
   } catch (error) {
     return res.status(500).send(error.message);
   }
 };
-const deleteCheck = async (req, res, next) => {
+const deleteCheck = async (req, res) => {
   try {
-    let {
-      checkId
+    const {
+      checkId,
     } = req.body;
     const result = await Check.findOne({
       where: {
         checkId,
-        userId: req.user.userId
-      }
+        userId: req.user.userId,
+      },
     });
     if (result) {
       await result.destroy();
@@ -134,15 +137,15 @@ const deleteCheck = async (req, res, next) => {
     return res.status(500).send(error.message);
   }
 };
-const runCheck = async (req, res, next) => {
+const runCheck = async (req, res) => {
   try {
-    let {
-      checkId
+    const {
+      checkId,
     } = req.body;
     const checkResult = await Check.findOne({
       where: {
-        checkId
-      }
+        checkId,
+      },
     });
     if (checkResult) {
       /* const config ={
@@ -154,10 +157,10 @@ const runCheck = async (req, res, next) => {
         username: checkResult.authentication.username,
         password: checkResult.authentication.password
        },
-      responseType: 'json', 
-    }*/
-      const tempURL = checkResult.protocol + '://' + checkResult.url;
-      let temp = await axios.get(tempURL);
+      responseType: 'json',
+    } */
+      const tempURL = `${checkResult.protocol}://${checkResult.url}`;
+      const temp = await axios.get(tempURL);
       if (temp.status >= 200 && temp.status < 300) {
         await Report.create({
           status: 'up',
@@ -165,7 +168,7 @@ const runCheck = async (req, res, next) => {
           outages: 0,
           downTime: 0,
           upTime: 60,
-          checkId
+          checkId,
         });
       } else {
         await Report.create({
@@ -174,56 +177,56 @@ const runCheck = async (req, res, next) => {
           outages: 1,
           downTime: 60,
           upTime: 0,
-          checkId
+          checkId,
         });
       }
       setInterval(async () => {
         const reportResult = await Report.findOne({
           where: {
-            checkId
-          }
+            checkId,
+          },
         });
         const result = await axios.get(tempURL);
         console.log('status code /  ', result.status);
         if (result.status >= 200 && result.status < 300) {
           if (reportResult.status === 'down') {
-            helper.verifyEmail(req.user.email, `Your check become up`, 'Check Notification');
+            helper.verifyEmail(req.user.email, 'Your check become up', 'Check Notification');
           }
-          let upTimeTemp = await reportResult.upTime + (checkResult.interval * 60);
+          const upTimeTemp = await reportResult.upTime + (checkResult.interval * 60);
           await Report.update({
             status: 'up',
             availability: ((upTimeTemp) / (reportResult.downTime + upTimeTemp)) * 100,
             outages: reportResult.outages,
             downTime: reportResult.downTime,
-            upTime: upTimeTemp
+            upTime: upTimeTemp,
           }, {
             where: {
-              checkId
-            }
+              checkId,
+            },
           });
           await checkHistory.create({
             status: 'up',
-            checkId: checkResult.checkId
+            checkId: checkResult.checkId,
           });
         } else {
           if (reportResult.status === 'up') {
-            helper.verifyEmail(req.user.email, `Your check become down`, 'Check Notification');
+            helper.verifyEmail(req.user.email, 'Your check become down', 'Check Notification');
           }
-          let downTimeTemp = await reportResult.downTime + (checkResult.interval * 60);
+          const downTimeTemp = await reportResult.downTime + (checkResult.interval * 60);
           await Report.update({
             status: 'down',
             availability: ((reportResult.upTime) / (downTimeTemp + reportResult.upTime)) * 100,
             outages: reportResult.outages + 1,
             downTime: downTimeTemp,
-            upTime: reportResult.upTime
+            upTime: reportResult.upTime,
           }, {
             where: {
-              checkId
-            }
+              checkId,
+            },
           });
           await checkHistory.create({
             status: 'down',
-            checkId: checkResult.checkId
+            checkId: checkResult.checkId,
           });
         }
         res.status(200);
@@ -233,31 +236,28 @@ const runCheck = async (req, res, next) => {
     }
   } catch (error) {
     return res.status(500).send(error.message);
-
   }
-}
-const getReport = async (req, res, next) => {
+};
+const getReport = async (req, res) => {
   try {
-
     const data = await Report.findOne({
       where: {
-        checkId: req.body.checkId
-      }
+        checkId: req.body.checkId,
+      },
     });
     if (!data) {
       res.status(404).send('check not found');
     } else {
-      //console.log(data);
       res.status(200).json(data);
     }
   } catch (error) {
     return res.status(500).send(error.message);
   }
-}
+};
 module.exports = {
   createCheck,
   deleteCheck,
   editCheck,
   runCheck,
-  getReport
+  getReport,
 };

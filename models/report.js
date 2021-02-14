@@ -1,13 +1,15 @@
-const db = require("../database/init");
+/* eslint-disable linebreak-style */
+const db = require('../database/init');
+
 const options = {
   freezeTableName: true,
-  tableName: "reports",
-  modelName: "reports",
+  tableName: 'reports',
+  modelName: 'reports',
   createdAt: true,
   updatedAt: true,
 };
 const Report = db.sequelize.define(
-  "Report",
+  'Report',
   {
     reportId: {
       autoIncrement: true,
@@ -15,16 +17,16 @@ const Report = db.sequelize.define(
       allowNull: false,
       primaryKey: true,
     },
-    status: { 
-       type: db.Sequelize.ENUM("up", "down"),
-        allowNull: false,
+    status: {
+      type: db.Sequelize.ENUM('up', 'down'),
+      allowNull: false,
     },
     availability: {
       type: db.Sequelize.INTEGER(5).UNSIGNED,
       allowNull: false,
     },
-    outages : {
-       type: db.Sequelize.INTEGER(11),
+    outages: {
+      type: db.Sequelize.INTEGER(11),
       allowNull: false,
     },
     downTime: {
@@ -33,10 +35,10 @@ const Report = db.sequelize.define(
     },
     upTime: {
       type: db.Sequelize.INTEGER(11),
-      allowNull: false
+      allowNull: false,
     },
   },
-  options
+  options,
 );
 
 module.exports = Report;

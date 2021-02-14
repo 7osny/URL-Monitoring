@@ -1,19 +1,19 @@
-const User = require("../models/user");
-const db = require("../database/init");
-const bcrypt = require("bcrypt");
-const configurations = require("../config/config");
-const jwt = require("jsonwebtoken");
+/* eslint-disable linebreak-style */
+/* eslint-disable consistent-return */
+/* eslint-disable no-console */
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const User = require('../models/user');
+const configurations = require('../config/config');
 const helper = require('../helpers/verifyemail');
 
-const signup = async (req, res, next) => {
-
+const signup = async (req, res) => {
   try {
-    let {
-      id,
+    const {
       firstName,
       secondName,
       email,
-      password
+      password,
     } = req.body;
     const userdata = await User.findOne({
       where: {
@@ -21,121 +21,115 @@ const signup = async (req, res, next) => {
       },
     });
     if (userdata) {
-      res.status(409).send("Your Email is exist");
+      res.status(409).send('Your Email is exist');
     } else {
       const hash = await bcrypt.hash(password, 5);
-      password = hash.toString();
       const code = Math.ceil((Math.random() * (999999 - 100000) + 100000));
       await User.create({
         firstName,
         secondName,
         email,
-        password,
-        code
+        password: hash,
+        code,
       });
-      const message = helper.verifyEmail(email, `your verification code${code}`,'verification code');
+      const message = helper.verifyEmail(email, `your verification code${code}`, 'verification code');
       res.status(200).send(`user created successfuly ${message}`);
     }
   } catch (error) {
     return res.status(500).send(error.message);
   }
 };
-const signin = async (req, res, next) => {
+const signin = async (req, res) => {
   try {
-    let {
+    const {
       email,
-      password
+      password,
     } = req.body;
     const userdata = await User.findOne({
       where: {
-        email
-      }
+        email,
+      },
     });
     const token = jwt.sign({
-        id: userdata.id,
-        email: userdata.email,
-      },
-      configurations.secretkey, {
-        expiresIn: "2 days",
-      }
-    );
+      id: userdata.id,
+      email: userdata.email,
+    },
+    configurations.secretkey, {
+      expiresIn: '2 days',
+    });
     console.log(token);
 
     if (userdata) {
       const match = await bcrypt.compare(password, userdata.password);
       if (match) {
-        res.status(200).send("login successfuly");
+        res.status(200).send('login successfuly');
       } else {
-        res.status(401).send("invaild password");
+        res.status(401).send('invaild password');
       }
     } else {
-      res.status(401).send("invaild email");
+      res.status(401).send('invaild email');
     }
   } catch (error) {
     return res.status(500).send(error.message);
   }
 };
 
-const editProfile = async (req, res, next) => {
+const editProfile = async (req, res) => {
   try {
-    let {
+    const {
       firstName,
       secondName,
-      password
+      password,
     } = req.body;
     console.log(req.user);
     const hash = await bcrypt.hash(password, 5);
-    password = hash.toString();
     const result = await User.update({
-      firstName: firstName,
-      secondName: secondName,
-      password: password
+      firstName,
+      secondName,
+      password: hash,
     }, {
       where: {
-        email: req.user.email
-      }
+        email: req.user.email,
+      },
     });
     res.status(200).send(result);
   } catch (error) {
     return res.status(500).send(error.message);
   }
 };
-const verify = async (req, res, next) => {
+const verify = async (req, res) => {
   try {
-    let {
+    const {
       email,
-      code
+      code,
     } = req.body;
     const user = await User.findOne({
       where: {
-        email
-      }
+        email,
+      },
     });
     if (user.verified) {
       res.send('user already verified');
+    } else if (user.code === code) {
+      await User.update({
+        verified: true,
+      }, {
+        where: {
+          email,
+        },
+      });
+      res.status(201).send('user verified successfuly');
     } else {
-      if (user.code === code) {
-        const newUser = await User.update({
-          verified: true
-        }, {
-          where: {
-            email
-          }
-        });
-        res.status(201).send('user verified successfuly');
-      } else {
-        return res.status(401).send('wrong verification code');
-      }
+      return res.status(401).send('wrong verification code');
     }
-    1
   } catch (error) {
     return res.status(401).send('wrong verification');
   }
-}
+};
 
 module.exports = {
   signup,
   signin,
   editProfile,
-  verify
+  verify,
 };

@@ -1,4 +1,7 @@
-require ('dotenv/config');
+/* eslint-disable linebreak-style */
+/* eslint-disable radix */
+/* eslint-disable eqeqeq */
+require('dotenv/config');
 
 module.exports = {
   nodeEnv: process.env.NODE_ENV || 'development',
@@ -11,12 +14,11 @@ module.exports = {
     password: process.env.MYSQL_PASSWORD || null,
     logging: (process.env.NODE_ENV != 'production'),
     pool: {
-      max: parseInt(process.env.MAX_MYSQL_CONNECTIONS ,0)|| 5,
-      min:parseInt( process.env.MIN_MYSQL_CONNECTIONS,0) || 0,
+      max: parseInt(process.env.MAX_MYSQL_CONNECTIONS, 0) || 5,
+      min: parseInt(process.env.MIN_MYSQL_CONNECTIONS, 0) || 0,
     },
   },
-  secretkey:process.env.secretkey,
-  email:process.env.email,
-  emailpassword:process.env.emailpassword
-
-}
+  secretkey: process.env.secretkey,
+  email: process.env.email,
+  emailpassword: process.env.emailpassword,
+};

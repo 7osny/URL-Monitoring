@@ -1,13 +1,15 @@
-const db = require("../database/init");
+/* eslint-disable linebreak-style */
+const db = require('../database/init');
+
 const options = {
   freezeTableName: true,
-  tableName: "checks",
-  modelName: "checks",
+  tableName: 'checks',
+  modelName: 'checks',
   createdAt: false,
   updatedAt: false,
 };
 const Check = db.sequelize.define(
-  "Check", {
+  'Check', {
     checkId: {
       autoIncrement: true,
       type: db.Sequelize.INTEGER(11).UNSIGNED,
@@ -24,7 +26,7 @@ const Check = db.sequelize.define(
       allowNull: false,
     },
     protocol: {
-      type: db.Sequelize.ENUM("HTTP", "HTTPS", "TCP"),
+      type: db.Sequelize.ENUM('HTTP', 'HTTPS', 'TCP'),
       allowNull: false,
     },
     path: {
@@ -41,27 +43,27 @@ const Check = db.sequelize.define(
     timeOutInSeconds: {
       type: db.Sequelize.INTEGER(10),
       allowNull: false,
-      defaultValue: 5
+      defaultValue: 5,
     },
     interval: {
       type: db.Sequelize.INTEGER(10),
       allowNull: false,
-      defaultValue: 10
+      defaultValue: 10,
     },
     threshold: {
       type: db.Sequelize.INTEGER(10).UNSIGNED,
-      defaultValue: 10
+      defaultValue: 10,
     },
     authentication: {
       type: db.Sequelize.STRING(255),
       allowNull: true,
       set(val) {
         this.setDataValue('authentication', `${val.username},${val.password}`);
-        },
-        get() {
+      },
+      get() {
         const key = this.getDataValue('authentication').split(',');
-        return { username: key[0], password: key[1]};
-        },
+        return { username: key[0], password: key[1] };
+      },
     },
     httpHeaders: {
       type: db.Sequelize.STRING(255),
@@ -74,19 +76,18 @@ const Check = db.sequelize.define(
     tags: {
       type: db.Sequelize.STRING(255),
       allowNull: true,
-   /*   get() {
+      /*   get() {
         return this.getDataValue('tags').split(',');
         },
         set(val) {
         this.setDataValue('tags', val.join(','));
-        },*/
+        }, */
     },
     ignoreSSL: {
       type: db.Sequelize.BOOLEAN,
       allowNull: false,
-    }
+    },
   },
-  options
+  options,
 );
-
 module.exports = Check;
