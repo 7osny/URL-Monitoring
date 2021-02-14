@@ -9,9 +9,8 @@ const usersRouter = require('./routes/users');
 
 const db= require('./database/init');
 require('./database/associations');
-db.sequelize.sync().then(()=>{
+db.sequelize.authenticate().then(()=>{
   console.log('Database is ready');
-  
 });
 const app = express();
 

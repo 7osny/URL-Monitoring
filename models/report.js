@@ -24,28 +24,16 @@ const Report = db.sequelize.define(
       allowNull: false,
     },
     outages : {
-       type: db.Sequelize.INTEGER(10),
+       type: db.Sequelize.INTEGER(11),
       allowNull: false,
     },
     downTime: {
-      type: db.Sequelize.INTEGER(10),
+      type: db.Sequelize.INTEGER(11),
       allowNull: false,
     },
     upTime: {
-      type: db.Sequelize.INTEGER(10),
+      type: db.Sequelize.INTEGER(11),
       allowNull: false
-    },
-    responseTime:{
-      type:db.Sequelize.INTEGER(10),
-      allowNull:false,
-    },
-    checkId: {
-      type: db.Sequelize.INTEGER(11).UNSIGNED,
-      allowNull: false,
-      references: {
-        model: "checks",
-        key: "id",
-      }
     },
   },
   options

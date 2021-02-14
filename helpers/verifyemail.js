@@ -2,7 +2,7 @@
 const configurations = require("../config/config");
 const nodemailer = require('nodemailer');
 
-const verifyEmail =  (Email,code)=>{
+const verifyEmail = async (Email,text,subject)=>{
     const transporter =  nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -19,17 +19,18 @@ const verifyEmail =  (Email,code)=>{
     var mailOptions = {
     from: configurations.email,
     to: Email,
-    subject: 'Verification code',
-    text: `your verification code is ${code}`
+    subject,
+    text
     };
-    transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-          console.log('Failed to send Email');
+
+   const valid= await  transporter.sendMail(mailOptions)
+   if(!valid)
+         {
+            return 'Failed to send Email';
             }
          else {
-            console.log('Email sent Successfuly') ;
+            return 'Email sent Successfuly' ;
         }
-      });
     }
 module.exports = {
         verifyEmail

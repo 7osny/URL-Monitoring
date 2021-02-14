@@ -13,13 +13,13 @@ const verifyToken =  async (req, res, next)=> {
         const bearerToken = bearer[1];
         req.token = bearerToken;
    const userdata= jwt.verify(req.token, configurations.secretkey);
-   const user = await  User.findOne({ where: { email: userdata.email} });
+   const user = await  User.findOne({ where: { userId: userdata.userId} });
         if (!user) {
           res.status(401);
           next();
         } else {
           req.user = user;
-          console.log(user);
+          res.status(202).send(userdata);
           next();
         }
       }
@@ -30,7 +30,7 @@ const verifyToken =  async (req, res, next)=> {
   }catch(err){
     return res.status(500);
   }
-}
+};
 
 const verifyemail =(Email,code)=>{
 const transporter =  nodemailer.createTransport({
@@ -52,7 +52,7 @@ to: Email,
 subject: 'Verification code',
 text: `your verification code is ${code}`
 };
-  transporter.sendMail(mailOptions, function (error, info) {
+  transporter.sendMail(mailOptions,  (error, info)=> {
     if (error) {
       return error.message;
         } else {

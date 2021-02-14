@@ -18,15 +18,7 @@ const checkHistory = db.sequelize.define(
     status: { 
        type: db.Sequelize.ENUM("up", "down"),
         allowNull: false,
-    },
-    checkId: {
-      type: db.Sequelize.INTEGER(11).UNSIGNED,
-      allowNull: false,
-      references: {
-        model: "checks",
-        key: "id",
-      }
-    },
+    }
   },
   options
 );

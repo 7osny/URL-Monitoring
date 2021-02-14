@@ -33,7 +33,7 @@ const signup = async (req, res, next) => {
         password,
         code
       });
-      const message = helper.verifyEmail(email, code);
+      const message = helper.verifyEmail(email, `your verification code${code}`,'verification code');
       res.status(200).send(`user created successfuly ${message}`);
     }
   } catch (error) {

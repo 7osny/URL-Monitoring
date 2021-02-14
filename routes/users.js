@@ -11,7 +11,6 @@ const verifySchema= require('../validation/verifySchema');
 
 var router = express.Router();
 
-/* GET */
 router.post('/signup',validation(signupSchema,'body'),usercontrol.signup);
 router.post('/signin',validation(signinSchema,'body'),usercontrol.signin);
 router.post('/edit',auth.verifyToken,validation(editProfileSchema,'body'),usercontrol.editProfile);

@@ -1,17 +1,15 @@
 var express = require('express');
 
-const User= require('../models/user');
 const checkControler= require('../controllers/checks');
 const auth= require('../middleware/auth');
 const validation= require('../middleware/validation');
-const deleteCheck= require('../validation/deleteCheck');
+const checkSchecma= require('../validation/checkSchema');
+const createCheck= require('../validation/createCheckSchema');
 
 var router = express.Router();
 
-/* GET */
-router.post('/create',checkControler.createCheck);
-router.post('/delete',validation(deleteCheck,'body'),checkControler.deleteCheck);
-router.post('/run',checkControler.runCheck);
-router.get('/test',checkControler.test);
-
+router.post('/create',auth.verifyToken,validation(createCheck,'body'),checkControler.createCheck);
+router.post('/delete',auth.verifyToken,validation(checkSchecma,'body'),checkControler.deleteCheck);
+router.post('/run',auth.verifyToken,validation(checkSchecma,'body'),checkControler.runCheck);
+router.get('/report',auth.verifyToken,validation(checkSchecma,'body'),checkControler.getReport);
 module.exports = router;
