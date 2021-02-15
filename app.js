@@ -1,10 +1,12 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-
+const swaggerUI = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
 const indexRouter = require('./routes/index');
 const checkRouter = require('./routes/checks');
 const usersRouter = require('./routes/users');
@@ -31,6 +33,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/check', checkRouter);
 
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   next(createError(404));

@@ -1,0 +1,237 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "version": "1.0.0",
+        "title": "URL Monitoring",
+        "description": "My URL Monitoring Api"
+    },
+    "server": {
+        "url": "http://localhost:3000/",
+        "description": "Local Server"
+    },
+    "host": "localhost:3000",
+    "basePath": "/",
+    "tags": [{
+        "name": "Users",
+        "description": "Everything about the users module"
+    }, {
+        "name": "Checks",
+        "description": "Everything about the checks module"
+    }],
+    "schemes": ["http"],
+    "security": [{
+        "JWT": []
+    }],
+    "definitions": {
+        "User": {
+            "type": "object",
+            "properties": {
+                "firstName": {
+                    "type": "string",
+                    "example": "Mohamed"
+                },
+                "secondName": {
+                    "type": "string",
+                    "example": "Hosny"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "mohammedhosny94@outlook.com"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "12345"
+                }
+            }
+        },
+        "Check": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "check1"
+                },
+                "url": {
+                    "type": "string",
+                    "example": "facebook.com"
+                },
+                "protocol": {
+                    "type": "string",
+                    "example": "HTTP"
+                },
+                "ignoreSSL": {
+                    "type": "boolean",
+                    "example": "1"
+                },
+                "tags":{
+                    "type":"string"
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "JWT": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        },
+        "schemas": {},
+        "requestBodies": {},
+        "responses": {
+            "UnauthorizedErrorResponse": {
+                "description": "Unauthorized",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "success": {
+                                    "type": "boolean",
+                                    "default": false,
+                                    "enum": [false]
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "default": "Unauthorized.",
+                                    "enum": ["Unauthorized."]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "ForbiddenErrorResponse": {
+                "description": "Forbidden",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "success": {
+                                    "type": "boolean",
+                                    "default": false,
+                                    "enum": [false]
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "default": "Access to the requested URL is forbidden.",
+                                    "enum": ["Access to the requested URL is forbidden."]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "BadRequestErrorResponse": {
+                "description": "Bad Request",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "success": {
+                                    "type": "boolean",
+                                    "default": false,
+                                    "enum": [false]
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Invalid request."
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "InternalServerErrorResponse": {
+                "description": "Internal Server Error",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "success": {
+                                    "type": "boolean",
+                                    "default": false,
+                                    "enum": [false]
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Server cannot process the request for an unknown reason."
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "paths": {
+        "/users/signup": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "description": "Create new user in system",
+                "parameters": [{
+                    "name": "user",
+                    "in": "body",
+                    "description": "User that we want to create",
+                    "schema": {
+                        "$ref": "#/definitions/User"
+                    }
+                }],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "400": {
+                        "$ref": "#/components/responses/BadRequestErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedErrorResponse"
+                    },
+                    "200": {
+                        "description": "New user is created"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/ForbiddenErrorResponse"
+                    },
+                    
+                "500": {
+                    "$ref": "#/components/responses/InternalServerErrorResponse"
+
+                }}
+            }
+        },
+            "/users/signin": {
+                "post": {
+                    "tags": ["Users"],
+                    "summary": "Logs user into the system",
+                    "description": "",
+                    "operationId": "loginUser",
+                    "produces": ["application/json", "application/xml"],
+                    "parameters": [{
+                        "name": "user",
+                        "in": "body",
+                        "description": "The email and password for login",
+                        "required": true,
+                        "type": "string"
+                    }],
+                    "responses": {
+                        "200": {
+                            "description": "successful operation"
+                        },
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid username/password supplied"
+                    }
+                }
+            }
+        }
+    }

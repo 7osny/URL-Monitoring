@@ -27,7 +27,6 @@ const verifyEmail = async (Email, text, subject) => {
   if (!valid) {
     return 'Failed to send Email';
   }
-
   return 'Email sent Successfuly';
 };
 module.exports = {

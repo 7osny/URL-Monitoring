@@ -33,7 +33,7 @@ const signup = async (req, res) => {
         code,
       });
       const message = helper.verifyEmail(email, `your verification code${code}`, 'verification code');
-      res.status(200).send(`user created successfuly ${message}`);
+      res.status(201).send(`user created successfuly  ${message}\n please verify your E-mail by verification code`);
     }
   } catch (error) {
     return res.status(500).send(error.message);
@@ -58,11 +58,10 @@ const signin = async (req, res) => {
       expiresIn: '2 days',
     });
     console.log(token);
-
     if (userdata) {
       const match = await bcrypt.compare(password, userdata.password);
       if (match) {
-        res.status(200).send('login successfuly');
+        res.status(200).json({ message: 'login successfuly', token });
       } else {
         res.status(401).send('invaild password');
       }

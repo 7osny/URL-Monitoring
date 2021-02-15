@@ -11,8 +11,7 @@ const verifyToken = async (req, res, next) => {
     if (typeof bearerHeader !== 'undefined') {
       const bearer = bearerHeader.split(' ');
       const bearerToken = bearer[1];
-      req.token = bearerToken;
-      const userdata = jwt.verify(req.token, configurations.secretkey);
+      const userdata = await jwt.verify(bearerToken, configurations.secretkey);
       const user = await User.findOne({ where: { userId: userdata.userId } });
       if (!user) {
         res.status(401);
