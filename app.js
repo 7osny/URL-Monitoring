@@ -14,7 +14,7 @@ const usersRouter = require('./routes/users');
 const db = require('./database/init');
 require('./database/associations');
 
-db.sequelize.authenticate().then(() => {
+db.sequelize.sync().then(() => {
   console.log('Database is ready');
 });
 const app = express();

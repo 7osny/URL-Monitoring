@@ -36,10 +36,6 @@ const Check = db.sequelize.define(
     port: {
       type: db.Sequelize.INTEGER(8).UNSIGNED,
     },
-    webhook: {
-      type: db.Sequelize.STRING(100),
-      allowNull: true,
-    },
     timeOutInSeconds: {
       type: db.Sequelize.INTEGER(10),
       allowNull: false,
@@ -57,13 +53,13 @@ const Check = db.sequelize.define(
     authentication: {
       type: db.Sequelize.STRING(255),
       allowNull: true,
-      set(val) {
+      /* set(val) {
         this.setDataValue('authentication', `${val.username},${val.password}`);
       },
       get() {
         const key = this.getDataValue('authentication').split(',');
         return { username: key[0], password: key[1] };
-      },
+      }, */
     },
     httpHeaders: {
       type: db.Sequelize.STRING(255),
@@ -85,7 +81,7 @@ const Check = db.sequelize.define(
     },
     ignoreSSL: {
       type: db.Sequelize.BOOLEAN,
-      allowNull: false,
+      allowNull: true,
     },
   },
   options,

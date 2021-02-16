@@ -10,7 +10,6 @@ const helper = require('../helpers/verifyemail');
 const createCheck = async (req, res) => {
   try {
     const {
-      checkId,
       name,
       url,
       protocol,
@@ -29,16 +28,14 @@ const createCheck = async (req, res) => {
 
     const data = await Check.findOne({
       where: {
-        checkId,
         name,
         userId: req.user.userId,
       },
     });
     if (data) {
-      res.status(409).send('Your url check is already founded');
+      res.status(400).send('Your url check is already founded');
     } else {
       const valid = await Check.create({
-        checkId,
         name,
         url,
         protocol,
@@ -110,7 +107,7 @@ const editCheck = async (req, res) => {
     if (result) {
       res.status(201).send(result);
     } else {
-      res.status(404);
+      res.status(400);
     }
   } catch (error) {
     return res.status(500).send(error.message);

@@ -12,18 +12,14 @@ const verifyToken = async (req, res, next) => {
       const bearer = bearerHeader.split(' ');
       const bearerToken = bearer[1];
       const userdata = await jwt.verify(bearerToken, configurations.secretkey);
-      const user = await User.findOne({ where: { userId: userdata.userId } });
+      const user = await User.findOne({ where: { email: userdata.email } });
       if (!user) {
-        res.status(401);
-        next();
-      } else {
-        req.user = user;
-        res.status(202).send(userdata);
-        next();
+        return res.status(401).json({ message: 'unauth' });
       }
-    } else {
-      res.sendStatus(403);
+      req.user = user;
       next();
+    } else {
+      return res.status(401).json({ message: 'unauth' });
     }
   } catch (err) {
     return res.status(500);

@@ -2,9 +2,8 @@
 const Joi = require('joi');
 
 const createCheckSchema = Joi.object({
-  checkId: Joi.number().integer().required(),
   name: Joi.string().min(2).max(45),
-  url: Joi.string().uri(),
+  url: Joi.string(),
   protocol: Joi.string().valid('HTTP', 'HTTPS', 'TCP'),
   path: Joi.string(),
   port: Joi.number(),

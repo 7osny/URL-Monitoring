@@ -11,5 +11,6 @@ const router = express.Router();
 router.post('/create', auth.verifyToken, validation(createCheck, 'body'), checkControler.createCheck);
 router.post('/delete', auth.verifyToken, validation(checkSchecma, 'body'), checkControler.deleteCheck);
 router.post('/run', auth.verifyToken, validation(checkSchecma, 'body'), checkControler.runCheck);
+router.post('/edit', auth.verifyToken, validation(createCheck, 'body'), checkControler.editCheck);
 router.get('/report', auth.verifyToken, validation(checkSchecma, 'body'), checkControler.getReport);
 module.exports = router;

@@ -51,8 +51,9 @@ const signin = async (req, res) => {
       },
     });
     const token = jwt.sign({
-      id: userdata.id,
+      userId: userdata.userId,
       email: userdata.email,
+      verified: userdata.verified,
     },
     configurations.secretkey, {
       expiresIn: '2 days',
@@ -82,7 +83,7 @@ const editProfile = async (req, res) => {
     } = req.body;
     console.log(req.user);
     const hash = await bcrypt.hash(password, 5);
-    const result = await User.update({
+    await User.update({
       firstName,
       secondName,
       password: hash,
@@ -91,7 +92,7 @@ const editProfile = async (req, res) => {
         email: req.user.email,
       },
     });
-    res.status(200).send(result);
+    res.status(200).json({ email: req.user.email, firstName, secondName });
   } catch (error) {
     return res.status(500).send(error.message);
   }
@@ -119,10 +120,10 @@ const verify = async (req, res) => {
       });
       res.status(201).send('user verified successfuly');
     } else {
-      return res.status(401).send('wrong verification code');
+      res.status(401).send('wrong verification code');
     }
   } catch (error) {
-    return res.status(401).send('wrong verification');
+    return res.status(500).send(error.message);
   }
 };
 
