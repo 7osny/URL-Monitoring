@@ -1,4 +1,4 @@
-### URL-Monitoring
+## URL-Monitoring
 
 The main idea of the task is to build an uptime monitoring RESTful API server which allows authorized users to enter URLs they want monitored, and get detailed uptime reports about their availability, outages, and total uptime/downtime.
 ### Prerequisites:
@@ -13,7 +13,7 @@ The main idea of the task is to build an uptime monitoring RESTful API server wh
 - Users should receive email alerts whenever a check goes down or up.
 - Users can get detailed uptime reports about their checks availability, average response time, and total uptime/downtime.
 
-## <a name="toc">Technologies</a>
+### <a name="toc">Technologies</a>
 
 - [Back-End](#back-end)
   - [Node.js](#NodeJS)
@@ -24,7 +24,7 @@ The main idea of the task is to build an uptime monitoring RESTful API server wh
 - [api-docs](#api-docs)
   -[swagger](#swagger)
 
-## Starting the Task locally 
+### Starting the Task locally 
 
 - Clone the code into a folder of your choice.
 - Make sure you have `node` and `npm` installed in your machine.
@@ -32,9 +32,11 @@ The main idea of the task is to build an uptime monitoring RESTful API server wh
 - Copy the `.env.example` to `.env` and set your own properties after creating MySql Database.
 - Run **npm start** 
 - Go to the browser and type http://localhost:3000/ to see the application running.
-## Testing and lint
+
+### Testing and lint
 
 - You can run linter via `npm run lint`.
 
-## Swagger API documentation.
-- Api documentation can be found on:http://localhost:3000/api-docs
+###Swagger API documentation.
+
+- Api documentation can be found on: http://localhost:3000/api-docs
