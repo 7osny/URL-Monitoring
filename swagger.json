@@ -206,6 +206,49 @@
                     }
                 }
             }
+        }, 
+        "/users/verifyemail": {
+            "post": {
+                "tags": ["Users"],
+                "summary": "verify ur E-mail",
+                "description": "verify E-mail",
+                "operationId": "verify",
+                "produces": ["application/json"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["email", "code"],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "mohammed@gmail.com"
+                                    },
+                                    "code": {
+                                        "type": "integer",
+                                        "example": 123456
+                                    }
+                                }
+
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "user verified successfuly"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedErrorResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerErrorResponse"
+
+                    }
+                }
+            }
         },
         "/users/signin": {
             "post": {
@@ -242,49 +285,6 @@
                     },
                     "401": {
                         "description": "Invalid username/password supplied"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/InternalServerErrorResponse"
-
-                    }
-                }
-            }
-        },
-        "/users/verifyemail": {
-            "post": {
-                "tags": ["Users"],
-                "summary": "verify ur E-mail",
-                "description": "verify E-mail",
-                "operationId": "verify",
-                "produces": ["application/json"],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "required": ["email", "code"],
-                                "properties": {
-                                    "email": {
-                                        "type": "string",
-                                        "example": "mohammed@gmail.com"
-                                    },
-                                    "code": {
-                                        "type": "integer",
-                                        "example": 123456
-                                    }
-                                }
-
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "201": {
-                        "description": "user verified successfuly"
-                    },
-                    "401": {
-                        "$ref": "#/components/responses/UnauthorizedErrorResponse"
                     },
                     "500": {
                         "$ref": "#/components/responses/InternalServerErrorResponse"
@@ -520,46 +520,6 @@
                 }
             }
         },
-        "/check/report": {
-            "get": {
-                "tags": [
-                    "Checks"
-                ],
-                "description": "get report about check",
-                "operationId": "report",
-                "produces": ["application/json"],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "required": ["chcekId"],
-                                "properties": {
-                                    "checkId": {
-                                        "type": "integer",
-                                        "example": 1
-                                    }
-                                }
-
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "404": {
-                        "description": "check not found"
-                    },
-                    "200": {
-                        "description": "check report"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/InternalServerErrorResponse"
-
-                    }
-                }
-            }
-        },
         "/check/run": {
             "post": {
                 "tags": [
@@ -592,6 +552,46 @@
                     },
                     "200": {
                         "description": "check running"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerErrorResponse"
+
+                    }
+                }
+            }
+        },
+        "/check/report": {
+            "get": {
+                "tags": [
+                    "Checks"
+                ],
+                "description": "get report about check",
+                "operationId": "report",
+                "produces": ["application/json"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["chcekId"],
+                                "properties": {
+                                    "checkId": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                }
+
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "404": {
+                        "description": "check not found"
+                    },
+                    "200": {
+                        "description": "check report"
                     },
                     "500": {
                         "$ref": "#/components/responses/InternalServerErrorResponse"
