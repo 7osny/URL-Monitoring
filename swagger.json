@@ -36,7 +36,7 @@
                 },
                 "email": {
                     "type": "string",
-                    "example": "mohammedhosny94@outlook.com"
+                    "example": "mohammedhosny94@hotmail.com"
                 },
                 "password": {
                     "type": "string",
@@ -178,21 +178,40 @@
     "paths": {
         "/users/signup": {
             "post": {
-                "tags": [
-                    "Users"
-                ],
+                "tags": ["Users"],
                 "description": "Create new user in system",
-                "parameters": [{
-                    "name": "user",
-                    "in": "body",
-                    "description": "User that we want to create",
-                    "schema": {
-                        "$ref": "#/definitions/User"
-                    }
-                }],
-                "produces": [
-                    "application/json"
-                ],
+                "operationId": "Create new user",
+                "produces": ["application/json"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["firstName", "secondName","email", "password"],
+                                "properties": {
+                                    "firstName": {
+                                        "type": "string",
+                                        "example": "Mohamed"
+                                    },
+                                    "secondName": {
+                                        "type": "string",
+                                        "example": "Hosny"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "mohammedhosny94@hotmail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "12345"
+                                    }
+                                }
+
+                            }
+                        }
+                    },
+                    "required": true
+                },
                 "responses": {
                     "400": {
                         "$ref": "#/components/responses/BadRequestErrorResponse"
@@ -223,7 +242,7 @@
                                 "properties": {
                                     "email": {
                                         "type": "string",
-                                        "example": "mohammed@gmail.com"
+                                        "example": "mohammedhosny94@hotmail.com"
                                     },
                                     "code": {
                                         "type": "integer",
@@ -266,7 +285,7 @@
                                 "properties": {
                                     "email": {
                                         "type": "string",
-                                        "example": "mohammed@gmail.com"
+                                        "example": "mohammedhosny94@hotmail.com"
                                     },
                                     "password": {
                                         "type": "string",
@@ -368,7 +387,7 @@
                                     },
                                     "protocol": {
                                         "type": "string",
-                                        "example": "http"
+                                        "example": "HTTP"
                                     }
                                 }
 
@@ -404,7 +423,7 @@
                         "application/json": {
                             "schema": {
                                 "type": "object",
-                                "required": ["name", "url", "protocol","chcekId"],
+                                "required": ["chcekId","name", "url", "protocol"],
                                 "properties": {
                                     "checkId":{
                                         "type":"integer",
